@@ -19,25 +19,25 @@ class BoardForm(forms.ModelForm):
         model = Board
         # fields = ['title', 'content']
         fields = '__all__'
-        widgets = {'title': forms.TextInput(attrs={
-                                            'placeholder':'제목을 입력해주세요.',
-                                            'class': 'title'}),
-                    'content': forms.Textarea(attrs={
-                                            'placeholder': '내용을 입력해주세요.',
-                                            'class': 'content'})
-                    }
-        error_messages = {'title': {
-                                    'required': '제목을 반드시 입력해주세요.'
-                            },
-                            'content': {
-                                    'required': '내용을 반드시 입력해주세요.'
-                            }
-                        }
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_method = 'POST'
-        self.helper.add_input(Submit('submit', 'Submit'))
+    #     widgets = {'title': forms.TextInput(attrs={
+    #                                         'placeholder':'제목을 입력해주세요.',
+    #                                         'class': 'title'}),
+    #                 'content': forms.Textarea(attrs={
+    #                                         'placeholder': '내용을 입력해주세요.',
+    #                                         'class': 'content'})
+    #                 }
+    #     error_messages = {'title': {
+    #                                 'required': '제목을 반드시 입력해주세요.'
+    #                         },
+    #                         'content': {
+    #                                 'required': '내용을 반드시 입력해주세요.'
+    #                         }
+    #                     }
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.helper = FormHelper()
+    #     self.helper.form_method = 'POST'
+    #     self.helper.add_input(Submit('submit', 'Submit'))
             
                 
 
