@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Board
 from .forms import BoardForm
 # Create your views here.
+@login_required
 def index(request):
     boards = Board.objects.order_by('-pk')
     context = {'boards': boards}
