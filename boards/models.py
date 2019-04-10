@@ -20,3 +20,9 @@ class Board(models.Model):
         
     def get_absolute_url(self):
         return reverse('boards:detail', args=[self.pk])
+        
+        
+class Comment(models.Model):
+    comment = models.TextField()
+    writer = models.CharField(max_length=10)
+    board = models.ForeignKey(Board, on_delete=models.CASCADE)

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import Board
+from .models import Board, Comment
 from .forms import BoardForm
 # Create your views here.
 # @login_required
@@ -34,9 +34,15 @@ def create(request):
 def detail(request, board_pk):
     # board = Board.objects.get(pk=board_pk)
     board = get_object_or_404(Board, pk=board_pk)
-    board.hit += 1
-    board.save()
-    context = {'board': board}
+    if request.method == "POST":
+        comment = Comment(comment=request.POST.get('comment'), writer=request.user, board_id=board_pk)
+        comment.save()
+        return redirect('boards:detail', board_pk)
+    else:
+        board.hit += 1
+        board.save()
+    comments = board.comment_set.all()
+    context = {'board': board, 'comments': comments}
     return render(request, 'boards/detail.html', context)
 
 def delete(request, board_pk):
@@ -46,6 +52,12 @@ def delete(request, board_pk):
         return redirect('boards:index')
     else:
         return redirect(board)
+
+def comment_delete(request, board_pk, comment_pk):
+    board = Board.objects.get(pk=board_pk)
+    comment = board.comment_set.get(pk=comment_pk)
+    comment.delete()
+    return redirect('boards:detail', board_pk)
 
 def update(request, board_pk):
     # 1. board_pk에 해당하는 오브젝트를 가져온다.

@@ -1,17 +1,36 @@
 {% extends 'boards/base.html' %}
 
 {% block body %}
-<h1>{{ board.pk }}번째 글</h1>
-<h2>{{ board.title }}</h2>
-<h3>{{ board.user }}</h3>
-<p>조회수 : {{ board.hit }}</p>
-<hr>
-<p>{{ board.content }}</p>
-{% if board.user == request.user or request.user.is_superuser %}
-    <form action="{% url 'boards:delete' board.pk %}" method="POST">
+<div class="container my-3">
+    <h5>{{ board.pk }}번째 글</h5>
+    <h1>{{ board.title }}</h1>
+    <h4>{{ board.user }}</h4>
+    <b>조회수 : {{ board.hit }}</b>
+    <hr>
+    <p style="font-size: large">{{ board.content }}</p>
+    <hr>
+    <p class="badge badge-pill badge-info" style="font-size: large">comments</p>
+    <br>
+    {% for comment in comments %}
+        <p class="d-inline">{{ comment.writer }} : {{ comment.comment }}</p>
+        <a href="{% url 'boards:comment_delete' board.pk comment.pk %}" class="badge badge-primary d-inline">삭제</a>
+        <br>
+    {% empty %}
+        <b>댓글이 없어요 ㅠ.ㅠ</b>
+    {% endfor %}
+    <form method="POST">
         {% csrf_token %}
-        <input type="submit" value="삭제">
+        <div class="form-group">
+            <span>내용</span> <input type="text" class="form-control d-inline" name="comment">
+        </div>
+        <input type="submit" value="댓글작성" class="btn btn-primary">
+    </form>
+</div>
+{% if board.user == request.user or request.user.is_superuser %}
+    <form action="{% url 'boards:delete' board.pk %}" method="POST" style="display: inline; height: 5px;">
+        {% csrf_token %}
+        <input type="submit" value="게시글 삭제" class="btn btn-outline-primary">
     </form>
 {% endif %}
-<a href="{% url 'boards:update' board.pk %}">수정하기</a>
+<a href="{% url 'boards:update' board.pk %}" class="btn btn-outline-primary d-inline">게시글 수정</a>
 {% endblock %}
