@@ -126,3 +126,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'django_fbv', 'assets'),
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+
+# LOGIN_URL = '/accounts/login'
+# AUTH_USER_MODEL = 'auth.User'

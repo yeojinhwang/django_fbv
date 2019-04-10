@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from .models import Board
 from .forms import BoardForm
 # Create your views here.
-@login_required
+# @login_required
 def index(request):
     boards = Board.objects.order_by('-pk')
     context = {'boards': boards}
@@ -19,8 +20,11 @@ def create(request):
             # title = board_form.cleaned_data.get('title')
             # content = board_form.cleaned_data.get('content')
             # board = Board(title=title, content=content)
+            # board.user = request.user
             # board.save()
-            board = board_form.save()
+            board = board_form.save(commit=False)
+            board.user = request.user
+            board.save()
             return redirect(board)
     else:
         board_form = BoardForm()
