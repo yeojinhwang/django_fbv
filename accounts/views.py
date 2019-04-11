@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 # from .forms import UserForm
+from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash, get_user_model
 from django.contrib.auth import login as auth_login # 재귀로 호출되지 않도록 하기 위해 auth_login으로 변경
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm, PasswordChangeForm
@@ -29,7 +30,9 @@ def signup(request):
         if user_form.is_valid():
             user = user_form.save()
             auth_login(request, user)
+            messages.info(request, f'{user.username}님, 회원가입 성공!')
             return redirect('boards:index')
+        messages.warning(request, '양식을 다시 확인해주세요.')
     else:
         user_form = UserCustomCreationForm()
     context = {'user_form': user_form}
